@@ -1,0 +1,382 @@
+{% extends '../layouts/admin.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="adminInfo">
+        <div class="text-end mb-2">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateInfoModal">Update Information</button>
+        </div>
+        <div class="card">
+            <div class="card-header bg-dark text-white">Information</div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                        <tr>
+                            <td>Email</td>
+                            <td>{{ profile.email }}</td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>{{ profile.phone }}</td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>{{ profile.address }}</td>
+                        </tr>
+                        <tr>
+                            <td>Information</td>
+                            <td>{{ profile.information }}</td>
+                        </tr>
+                        <tr>
+                            <td>Facebook URL</td>
+                            <td>{{ profile.facebook }}</td>
+                        </tr>
+                        <tr>
+                            <td>Twitter URL</td>
+                            <td>{{ profile.twitter }}</td>
+                        </tr>
+                        <tr>
+                            <td>LinkedIn URL</td>
+                            <td>{{ profile.linkedin }}</td>
+                        </tr>
+                        <tr>
+                            <td>Instagram URL</td>
+                            <td>{{ profile.instagram }}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="adminServices mt-5">
+        <div class="text-end mb-2">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addServiceModal">Add Service</button>
+        </div>
+        <div class="card">
+            <div class="card-header bg-dark text-white">Services</div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Updated At</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for service in services %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ service.title }}</td>
+                        <td>{{ service.description }}</td>
+                        <td>{{ service.created_at }}</td>
+                        <td>{{ service.updated_at }}</td>
+                        <td>
+                            <a href="#editServiceModal{{ service.id }}" data-bs-toggle="modal" data-bs-target="#editServiceModal{{ service.id }}">Edit</a>
+                            ,
+                            <a href="#deleteServiceModal{{ service.id }}" data-bs-toggle="modal" data-bs-target="#deleteServiceModal{{ service.id }}">Delete</a>
+
+                            <!-- Modal -->
+                            <div class="modal modal-lg fade" id="editServiceModal{{ service.id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ service.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel{{ service.id }}">Update Service</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="post" class="" action="{% url 'updateService' service.id %}">
+                                    <div class="modal-body">
+                                        {% csrf_token %}
+                                        <div class="mb-3">
+                                            <label for="id_title" class="form-label">Title</label>
+                                            <input type="text" class="form-control" id="id_title" name="title" value="{{ service.title }}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="id_description" class="form-label">Description</label>
+                                            <textarea class="form-control" id="id_description" name="description" required>{{ service.description }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal modal-lg fade" id="deleteServiceModal{{ service.id }}" tabindex="-1" aria-labelledby="exampleModalLabelDlt{{ service.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabelDlt{{ service.id }}">Delete Service</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="post" action="{% url 'deleteService' service.id %}">
+                                    <div class="modal-body">
+                                        {% csrf_token %}
+                                        <p>Are you sure you want to delete this service?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="adminTestimonials mt-5">
+        <div class="text-end mb-2">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addTestimonialModal">Add Testimonial</button>
+        </div>
+        <div class="card">
+            <div class="card-header bg-dark text-white">Testimonials</div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Updated At</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for testimonial in testimonials %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ testimonial.title }}</td>
+                        <td>{{ testimonial.description }}</td>
+                        <td>{{ testimonial.created_at }}</td>
+                        <td>{{ testimonial.updated_at }}</td>
+                        <td>
+                            <a href="#editTmModal{{ testimonial.id }}" data-bs-toggle="modal" data-bs-target="#editTmModal{{ testimonial.id }}">Edit</a>
+                            ,
+                            <a href="#deleteTmModal{{ testimonial.id }}" data-bs-toggle="modal" data-bs-target="#deleteTmModal{{ testimonial.id }}">Delete</a>
+
+                            <!-- Modal -->
+                            <div class="modal modal-lg fade" id="editTmModal{{ testimonial.id }}" tabindex="-1" aria-labelledby="exampleModalLabelikls{{ testimonial.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabelikls{{ testimonial.id }}">Update Testimonial</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form class="" method="post" action="{% url 'updateTestimonial' testimonial.id %}">
+                                    <div class="modal-body">
+                                        {% csrf_token %}
+                                        <div class="mb-3">
+                                            <label for="id_title" class="form-label">Title</label>
+                                            <input type="text" class="form-control" id="id_title" name="title" value="{{ testimonial.title }}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="id_description" class="form-label">Description</label>
+                                            <textarea class="form-control" id="id_description" name="description" required>{{ testimonial.description }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal modal-lg fade" id="deleteTmModal{{ testimonial.id }}" tabindex="-1" aria-labelledby="exampleModalLabelDltdfds{{ testimonial.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabelDltdfds{{ testimonial.id }}">Delete Testimonial</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form method="post" action="{% url 'deleteTestimonial' testimonial.id %}">
+                                    <div class="modal-body">
+                                        {% csrf_token %}
+                                        <p>Are you sure you want to delete this testimonial?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="adminMessages mt-5 mb-5">
+        <div class="card">
+            <div class="card-header bg-dark text-white">Email Messages</div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Service</th>
+                        <th scope="col">Appointment Date</th>
+                        <th scope="col">Message</th>
+                        <th scope="col">Send At</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for contact in contacts %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ contact.name }}</td>
+                        <td>{{ contact.email }}</td>
+                        <td>{{ contact.phone }}</td>
+                        <td>{{ contact.service }}</td>
+                        <td>{{ contact.book_date }}</td>
+                        <td><span class="text-small">{{ contact.message }}</span></td>
+                        <td>{{ contact.created_at }}</td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal modal-lg fade" id="addServiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add Service</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form class="" method="post" action="{% url 'addService' %}">
+        <div class="modal-body">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="id_title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_description" class="form-label">Description</label>
+                <textarea class="form-control" id="id_description" name="description" required></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal modal-lg fade" id="addTestimonialModal" tabindex="-1" aria-labelledby="exampleModalLabeldiellss" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabeldiellss">Add Testimonial</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="post" action="{% url 'addTestimonial' %}">
+        <div class="modal-body">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="id_title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_description" class="form-label">Description</label>
+                <textarea class="form-control" id="id_description" name="description" required></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal modal-lg fade" id="updateInfoModal" tabindex="-1" aria-labelledby="exampleModalLabeldiellssTKKDL" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabeldiellssTKKDL">Add Testimonial</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="post" action="{% url 'updateInformation' %}">
+        <div class="modal-body">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="id_email" name="email" required value="{{ profile.email }}">
+            </div>
+            <div class="mb-3">
+                <label for="id_phone" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="id_phone" name="phone" required value="{{ profile.phone }}">
+            </div>
+            <div class="mb-3">
+                <label for="id_address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="id_address" name="address" required value="{{ profile.address }}">
+            </div>
+            <div class="mb-3">
+                <label for="id_information" class="form-label">Information</label>
+                <textarea class="form-control" id="id_information" name="information" required>{{ profile.information }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="id_facebook" class="form-label">Facebook URL</label>
+                <input type="text" class="form-control" id="id_facebook" name="facebook" required value="{{ profile.facebook }}">
+            </div>
+            <div class="mb-3">
+                <label for="id_twitter" class="form-label">Twitter URL</label>
+                <input type="text" class="form-control" id="id_twitter" name="twitter" required value="{{ profile.twitter }}">
+            </div>
+            <div class="mb-3">
+                <label for="id_linkedin" class="form-label">LinkedIn URL</label>
+                <input type="text" class="form-control" id="id_linkedin" name="linkedin" required value="{{ profile.linkedin }}">
+            </div>
+            <div class="mb-3">
+                <label for="id_instagram" class="form-label">Instagram URL</label>
+                <input type="text" class="form-control" id="id_instagram" name="instagram" required value="{{ profile.twitter }}">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+{% endblock %}
