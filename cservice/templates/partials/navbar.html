@@ -33,15 +33,15 @@
         </li>
 
         {% if not request.user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.view_name == 'login' %}active{% endif %}" href="{% url 'login' %}">Login</a>
-        </li>
+        {% comment %} <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.view_name == 'login' %}active{% endif %}" href="{% url 'admin:login' %}">Login</a>
+        </li> {% endcomment %}
         {% comment %} <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.view_name == 'register' %}active{% endif %}" href="{% url 'register' %}">Register</a>
         </li> {% endcomment %}
         {% endif %}
         {% if request.user.is_authenticated %}
-        <li class="nav-item dropdown">
+        {% comment %} <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ request.user.username }}
           </a>
@@ -49,7 +49,7 @@
             <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
             <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
           </ul>
-        </li>
+        </li> {% endcomment %}
         {% endif %}
       </ul>
     </div>
