@@ -47,3 +47,13 @@ class ContactForm(forms.ModelForm):
         
         return cleaned_data
 
+class ContactAdminForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ContactAdminForm, self).__init__(*args, **kwargs)
+        
+        # Restrict the assigned_staff field choices to staff users
+        self.fields['assigned_staff'].queryset = User.objects.filter(is_staff=True, is_superuser=False)
