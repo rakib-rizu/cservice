@@ -1,9 +1,9 @@
-{% extends '../layouts/admin.html' %}
+{% extends '../layouts/base.html' %}
 
 {% block content %}
 
 <div class="container">
-    <div class="card card-body mt-5">
+    <div class="card card-body my-5">
         <p><b><i>Please share your valueable feedback!</i></b></p>
         <form action="{% url 'addFeedback' %}" method="post">
             {% csrf_token %}
