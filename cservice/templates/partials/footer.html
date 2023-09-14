@@ -1,0 +1,42 @@
+{% load static %}
+
+<div class="footer_section layout_padding" id="cserviceFooterArea" style="padding-bottom: 100px">
+    <div class="container">
+      <form method="POST" action="{% url 'subscribe' %}">
+         {% csrf_token %}
+         <input type="text" class="email_text" name="email" placeholder="Enter Your Email" name="Enter Your Email">
+         <button type="submit" class="btn btn-warning quotebtn subscribe_bt" style="padding-top: 13px; padding-bottom: 13px">SUBSCRIBE</button>
+         {% comment %} <div class="subscribe_bt"><a href="#" type="submit" style="text-decoration: none">Subscribe</a></div> {% endcomment %}
+      </form>
+       <div class="footer_section_2">
+          <div class="row">
+             <div class="col-lg-3 margin_top">
+                <div class="call_text"><a href="#"><img src="{% static 'images/call-icon1.png' %}"><span class="padding_left_15">{{ profile.phone }}</span></a></div>
+                <div class="call_text"><a href="#"><img src="{% static 'images/mail-icon1.png' %}"><span class="padding_left_15">{{ profile.email }}</span></a></div>
+             </div>
+             <div class="col-lg-3">
+                <div class="information_main">
+                   <h4 class="information_text">Information</h4>
+                   <p class="many_text">Address: {{ profile.address }}</p>
+                </div>
+             </div>
+             <div class="col-lg-3 col-md-6">
+                <div class="information_main">
+                   <h4 class="information_text">Helpful Links</h4>
+                   <div class="footer_menu">
+                      <ul>
+                         <li><a href="{% url 'home' %}">Home</a></li>
+                         <li><a href="{% url 'services' %}">Services</a></li>
+                      </ul>
+                   </div>
+                </div>
+             </div>
+             <div class="col-lg-3">
+                <div class="information_main">
+                   <div class="footer_logo"><a href="index.html"><img src="{% static 'images/logo.jpg' %}" width="auto" height="100px"></a></div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
