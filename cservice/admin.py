@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Service, Testimonial, Profile, Contact
+from .models import Service, Testimonial, Profile, Contact, Feedback
 from .forms import ContactAdminForm
+from django.core.mail import send_mail
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
@@ -62,4 +63,34 @@ class ContactAdmin(admin.ModelAdmin):
     #     return False
     def has_delete_permission(self, request, obj=None):
         return False
+    
+    def save_model(self, request, obj, form, change):
+        # Save the model instance
+        super(ContactAdmin, self).save_model(request, obj, form, change)
+        
+        # Check if the status is changed to "done"
+        if 'status' in form.changed_data and form.cleaned_data['status'] == 'Done':
+            subject = 'Thanks for using C-Service'
+            message = 'Thank you for using our service. Feel free to share your feedback:\n\n'
+            link = 'http://' + request.get_host() + '/feedback/' + obj.email 
+            message += link
+            from_email = 'info@cservice.com'
+            recipient_list = [obj.email]
+            
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 Contact._meta.verbose_name_plural = "Appointments"
+
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ('email', 'rating', 'comment', 'created_at', 'updated_at')
+    list_filter = ('email', 'rating', 'comment', 'created_at', 'updated_at')
+    search_fields = ('email', 'rating', 'comment', 'created_at', 'updated_at')
+    ordering = ('-created_at',)
+
+    def has_add_permission(self, request):
+        return False
+    def has_change_permission(self, request, obj=None):
+        return False
+    def has_delete_permission(self, request, obj=None):
+        return False
+Feedback._meta.verbose_name_plural = "Feedbacks"

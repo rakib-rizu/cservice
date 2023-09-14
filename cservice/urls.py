@@ -34,5 +34,7 @@ urlpatterns = [
     path('services', views.services, name='services'),
     path('services/send-message', views.sendMessage, name='sendMessage'),
     path('subscribe', views.subscribe, name='subscribe'),
+    path('feedback/<str:email>/', views.feedback, name='feedback'),
+    path('feedback/add', views.addFeedback, name='addFeedback'),
     path('admin/', admin.site.urls),
 ]

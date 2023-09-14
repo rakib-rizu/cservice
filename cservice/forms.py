@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Service, Testimonial, Profile, Contact
+from .models import Service, Testimonial, Profile, Contact, Feedback
 from datetime import datetime, timedelta
 
 class RegistrationForm(UserCreationForm):
@@ -57,3 +57,8 @@ class ContactAdminForm(forms.ModelForm):
         
         # Restrict the assigned_staff field choices to staff users
         self.fields['assigned_staff'].queryset = User.objects.filter(is_staff=True, is_superuser=False)
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['email', 'rating', 'comment']

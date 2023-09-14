@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
-from .forms import RegistrationForm, LoginForm, ServiceForm, TestimonialForm, ProfileForm, ContactForm
+from .forms import RegistrationForm, LoginForm, ServiceForm, TestimonialForm, ProfileForm, ContactForm, FeedbackForm
 from .models import Service, Testimonial, Profile, Contact
 from django.core.mail import send_mail
 from datetime import datetime
@@ -166,3 +166,15 @@ def subscribe(request):
             return redirect('home')  # Redirect to a success page after sending the email
     else:
         return redirect('home')
+
+def feedback(request, email):
+    return render(request, 'views/feedback.html', {'email': email})
+
+def addFeedback(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = FeedbackForm()

@@ -40,3 +40,10 @@ class Contact(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     assigned_staff = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='contacts_assigned')
+
+class Feedback(models.Model):
+    email = models.CharField(max_length=255)
+    rating = models.CharField(max_length=255)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
